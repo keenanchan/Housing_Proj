@@ -3,11 +3,18 @@ import Calendar from 'react-calendar';
 
 import 'react-calendar/dist/Calendar.css';
 export default class CalendarSelect extends Component {
-  state = {
-    date: [new Date(),new Date()],
+  constructor(props) {
+    super(props)
+    
+    this.state = {
+      dates: [new Date(),new Date()],
+    }
+
+    this.onChange = this.onChange.bind(this)
   }
 
-  onChange = date => this.setState({ date },()=>console.log(date))
+  onChange = (dates) => this.setState({ dates: dates.map((date) => new Date(date)) },
+    () => console.log(this.state))
 
   render() {
     return (
@@ -16,7 +23,7 @@ export default class CalendarSelect extends Component {
           returnValue = {"range"}
           selectRange = {true}
           onChange={this.onChange}
-          value={this.state.date}
+          value={this.state.dates}
         />
       </div>
     );
