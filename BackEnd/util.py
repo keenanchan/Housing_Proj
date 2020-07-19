@@ -1,4 +1,4 @@
-import os, os.path
+import os, os.path, re
 from PIL import Image
 
 def intro_processing(json_f):
@@ -58,3 +58,5 @@ def img_processing(photos):
                 if main: pics.append(pic_send_name)
                 main = main if main else pic_send_name
         return main,pics
+def email_verify(email):
+        return re.search("@ucsd.edu",email) == None
