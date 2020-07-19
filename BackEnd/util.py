@@ -59,4 +59,4 @@ def img_processing(photos):
                 main = main if main else pic_send_name
         return main,pics
 def email_verify(email):
-        return re.search("@ucsd.edu",email) == None
+        return re.search("@ucsd.edu",email) != None
