@@ -87,6 +87,9 @@ def gdisconnect():
 
 @authetification.route("/gconnect", methods=['POST','OPTIONS'])
 def gconnect():
+    """Method for connecting through google API and ucsd school account
+    Will be used whenever a POST request is sent to backend for login verification
+    """
     # Validate state token
     print(login_session)
     if request.method == 'OPTIONS':
@@ -117,7 +120,7 @@ def gconnect():
         img = login_session['profile_pic']
         createUser(login_session)
     uid = login_session['email'][:login_session['email'].find("@")]
-    streamchat_token = client.create_token(uid).decode("utf-8")
+    streamchat_token = client.create_token(uid)
     response = make_response(jsonify([img,uid,streamchat_token]), 200)
     response.headers['Content-Type'] = 'application/json'  
     response.headers['Access-Control-Allow-Credentials'] = 'true'

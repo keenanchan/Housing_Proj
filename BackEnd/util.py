@@ -59,4 +59,8 @@ def img_processing(photos):
                 main = main if main else pic_send_name
         return main,pics
 def email_verify(email):
+        """Method for verifying the gmail logged in is the UCSD school account.
+        Assumption: this function is only called if Google API authorization 
+        succeeds for the gmail account.
+        """
         return re.search("@ucsd.edu",email) != None
