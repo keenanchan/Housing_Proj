@@ -10,7 +10,7 @@ import json
 import requests
 import random
 import string
-from util import intro_processing,header_processing,other_processing,img_processing,rtype_processing
+from util import intro_processing,header_processing,other_processing,img_processing,rtype_processing, email_verify
 
 engine = create_engine('sqlite:///housing.db?check_same_thread=False')
 Base.metadata.bind = engine
@@ -103,6 +103,10 @@ def gconnect():
     data = request.json['profileObj']
     login_session['username'] = data["name"]
     login_session['email'] = data["email"]
+    if email_verify(login_session['email']) == False:
+        response = make_response(json.dumps('Invalid email.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     login_session['profile_pic'] = data["imageUrl"]
     print(request.json["accessToken"])
     login_session['accessToken'] = request.json['accessToken']
