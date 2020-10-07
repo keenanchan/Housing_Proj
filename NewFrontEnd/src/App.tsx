@@ -6,6 +6,7 @@ import HouseCard from './components/HouseCard';
 import Filter from './components/Filter';
 import { Counter } from './redux-example/counter/Counter';
 import Home from './components/Home'
+import PostForm from './components/PostForm'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <NavBar />
       <Filter />
       <Home />
+      <PostForm />
     </div>
   );
 }
