@@ -1,6 +1,6 @@
 import { backEndAPI } from './apiBases';
 
-export const getHousing = async (): Promise<string | undefined> => {
+const getHousing = async (): Promise<string | undefined> => {
   try {
     const result = await backEndAPI.get('/getRoom');
     console.log(result);
@@ -16,3 +16,5 @@ export const getHousing = async (): Promise<string | undefined> => {
 getHousing().then((response) => {
   console.log(response);
 });
+
+export { getHousing };

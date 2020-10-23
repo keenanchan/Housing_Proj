@@ -33,6 +33,7 @@ const getDuration = async (
           // check the resulting element for success or failure
           const result = response.rows[0].elements[0];
           const Statuses = google.maps.DistanceMatrixElementStatus;
+
           if (result.status === Statuses.OK) {
             resolve(result.duration);
           } else if (result.status === Statuses.ZERO_RESULTS) {
@@ -50,6 +51,30 @@ const getDuration = async (
   });
 };
 
+/**
+ * Gets the duration of a trip on an average day from address to Price Center
+ * in minutes, as a string
+ * @param address - the address to get duration (from address to Price Center)
+ * @return - There are two return options:
+ *           1) minutes from the address to Price Center, as a string (i.e. 128 min)
+ *           2) undefined if there were zero results (no route could be found to UCSD
+ *           with transit options)
+ * @error - throws an error if the address is not recognizable by Google
+ */
+const getDurationInMinutes = async (
+  address: string,
+): Promise<string | undefined> => {
+  const result = await getDuration(address);
+  if (!result) return undefined;
+
+  const minutes = result.value / 60;
+
+  return `${minutes} min`;
+};
+
+/**
+ * Function to test getDuration
+ */
 const testGetDuration = async () => {
   const tests = [
     '9775 Genesee Ave, San Diego, CA 92121',
@@ -67,4 +92,4 @@ const testGetDuration = async () => {
   });
 };
 
-export { getDuration, testGetDuration };
+export { getDuration, getDurationInMinutes, testGetDuration };
