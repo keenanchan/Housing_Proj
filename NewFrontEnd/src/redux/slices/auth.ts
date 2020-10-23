@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { AppThunk, RootState } from '../store';
 
 interface User {}
@@ -25,5 +26,12 @@ export const authSlice = createSlice({
 export const { setUser } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth.user;
+
+export const login = (loginCredentials: number): AppThunk => async (
+  dispatch,
+) => {
+  const user = await axios.get('our url here', { params });
+  dispatch(setUser(user));
+};
 
 export default authSlice.reducer;

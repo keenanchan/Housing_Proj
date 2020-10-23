@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { AppThunk, RootState } from '../store';
 
 interface HousingPost {
@@ -33,6 +34,14 @@ export const updateHousingPosts = (): AppThunk => (dispatch) => {
   setTimeout(() => {
     dispatch(setHousingPosts([]));
   }, 1000);
+};
+
+export const getHousingPosts = (): AppThunk => async (dispatch) => {
+  // 1) get the data
+  const posts = await axios.get('our url', { params });
+
+  // 2) set the data in the state using dispatch
+  dispatch(setHousingPosts(posts));
 };
 
 export const selectingHousingPosts = (state: RootState) => state.housing.posts;
