@@ -20,7 +20,7 @@ const Ellipse: React.FC<{}> = () => (
   </Row>
 );
 
-const facilityToIcon = {
+export const facilityToIcon = {
   Parking: <facilityIcons.parking />,
   Elevator: <facilityIcons.elevator />,
   'Gym room': <facilityIcons.gym />,
@@ -34,14 +34,14 @@ const GetIcon: React.FC<{ str: keyof typeof facilityToIcon }> = ({ str }) => (
 );
 
 interface PathProps {
-  houseType: string;
+  houseName: string;
   pricePerMonth: number;
   roomType: string;
   moveIn: string;
-  stayPeriod: string;
+  stayPeriod: number;
   facilities: (keyof typeof facilityToIcon)[];
   lookingFor: string[];
-  distance: number;
+  distance: string;
   address: string;
   bioName: string;
   bioYear: number;
@@ -55,7 +55,7 @@ interface PathProps {
 }
 
 const HouseProfile: React.FC<PathProps> = ({
-  houseType,
+  houseName,
   pricePerMonth,
   roomType,
   moveIn,
@@ -131,7 +131,7 @@ const HouseProfile: React.FC<PathProps> = ({
           <Col sm={12} md={6} lg={4}>
             <Container className="mt-3 mt-lg-5 mt-md-4 mx-3 mx-lg-0">
               <Row className="justify-content-center">
-                <span className="housing-profile-house-type">{houseType}</span>
+                <span className="housing-profile-house-type">{houseName}</span>
               </Row>
 
               <Row>

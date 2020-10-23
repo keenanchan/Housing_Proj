@@ -23,7 +23,7 @@ const getDuration = async (
         destinations: [priceCenterCoordinates],
         travelMode: google.maps.TravelMode.TRANSIT,
         transitOptions: {
-          arrivalTime: new Date(),
+          arrivalTime: new Date(), // TODO need to put a constant date!
           modes: [google.maps.TransitMode.BUS],
         },
         unitSystem: google.maps.UnitSystem.IMPERIAL,

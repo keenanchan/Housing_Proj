@@ -7,14 +7,14 @@ matrix:
         - cd FrontEnd/
       cache:
         directories:
-        - node_modules
+          - node_modules
       script:
         - npm test
 
     - language: python
       before_install:
         - cd BackEnd/
-      install: 
-        - pip install -r requirements.txt
+      install:
+        - pip install -r config/requirements.txt
       script:
         - python test.py
