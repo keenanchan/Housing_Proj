@@ -1,4 +1,5 @@
+import { getDuration } from './google';
 import { fakeHousingAPI } from './housing';
 import { fakeUserAPI } from './user';
 
-export { fakeHousingAPI, fakeUserAPI };
+export { getDuration, fakeHousingAPI, fakeUserAPI };

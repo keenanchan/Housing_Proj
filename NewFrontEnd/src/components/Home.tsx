@@ -25,9 +25,11 @@ const Home: React.FC = () => {
 
   return (
     <Container>
+      {/* Modals */}
       <Login show={showLogin} handleClose={handleCloseLogin} />
       <HousingPost show={showHousingPost} setShow={setShowHousingPost} />
 
+      {/* The actual home page */}
       <Row>
         <Col md={{ span: 8, offset: 1 }}>
           <Filter />
