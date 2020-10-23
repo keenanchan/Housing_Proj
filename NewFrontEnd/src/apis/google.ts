@@ -36,6 +36,7 @@ const getDuration = async (
           if (result.status === Statuses.OK) {
             resolve(result.duration);
           } else if (result.status === Statuses.ZERO_RESULTS) {
+            // TODO need to add fallback here (i.e. use driving instead), but also somehow handle telling users that there is no public transportation route
             resolve(undefined);
           } else if (result.status === Statuses.NOT_FOUND) {
             reject(result.status);
