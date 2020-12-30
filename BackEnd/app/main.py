@@ -72,4 +72,4 @@ def searchRooms():
 if __name__ == '__main__':
     app.secret_key = b'\xb7\xe2\xd6\xa3\xe2\xe0\x11\xd1\x92\xf1\x92G&>\xa2:'
     app.debug = True
-    app.run(host='localhost', port=3001)
+    app.run(host='0.0.0.0', port=3002)
