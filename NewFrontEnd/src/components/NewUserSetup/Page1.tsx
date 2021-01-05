@@ -62,7 +62,9 @@ const Page1: React.FC<WizardFormStep<Page1Store>> = ({
             error={validations?.name?.error}
           />
         </Col>
+      </Row>
 
+      <Row className="justify-content-center m-2">
         <Col sm={12} md={6}>
           <Input label="Email" type="text" value={email} readOnly />
         </Col>
@@ -79,11 +81,13 @@ const Page1: React.FC<WizardFormStep<Page1Store>> = ({
             error={validations?.phone?.error}
           />
         </Col>
+      </Row>
 
-        <Col md={12}>
+      <Row className="justify-content-center m-2 pl-3">
+        <Col>
           <Row className="post-word">School year</Row>
-          <br />
-          <Row>
+          {/* <br /> */}
+          <Row className="my-2">
             <div
               className={
                 schoolYear === SchoolYear.First ? SelectBg : nonSelectBg
@@ -174,7 +178,9 @@ const Page1: React.FC<WizardFormStep<Page1Store>> = ({
             </div>
           </Row>
         </Col>
+      </Row>
 
+      <Row className="justify-content-center m-2">
         <Col md={12}>
           <Dropdown
             options={majors}

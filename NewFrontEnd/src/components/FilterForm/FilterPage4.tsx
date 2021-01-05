@@ -36,7 +36,7 @@ export const page4InitialStore: Page4Store = {
   earlyMonth: Month.Anytime,
   lateInterval: Interval.Anytime,
   lateMonth: Month.Anytime,
-  stayPeriod: 0,
+  stayPeriod: 1,
 };
 
 const FilterPage4: React.FC<WizardFormStep<Page4Store>> = ({
