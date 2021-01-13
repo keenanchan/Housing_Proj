@@ -13,7 +13,7 @@ import Login from './Login';
 import HousingPost from './HousingPostForm';
 import BookmarksList from './BookmarksList';
 import NewUserSetup from './NewUserSetup';
-
+import SpotifySearchTest from './SpotifySearchTest';
 import { testGetDuration } from '../apis/google';
 
 const Home: React.FC = () => {
@@ -56,6 +56,10 @@ const Home: React.FC = () => {
           {/* <div>
             <Button onClick={() => testGetDuration()}>Click me!</Button>
           </div> */}
+
+          <div>
+            <SpotifySearchTest />
+          </div>
 
           <div>
             <HouseCardList />
