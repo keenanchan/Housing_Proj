@@ -6,7 +6,7 @@ import getopt
 
 s3_client = boto3.client('s3')
 
-
+# test whether I can upload http images
 def upload_file_wname(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
 
