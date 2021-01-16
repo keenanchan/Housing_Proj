@@ -139,7 +139,13 @@ export const newHousingPost = (
 };
 
 // TODO add a check for if the user is signed in
-export const getHousingFavorites = (): AppThunk => async (dispatch) => {
+export const getHousingFavorites = (): AppThunk => async (
+  dispatch,
+  getState,
+) => {
+  const { user } = getState().auth;
+  if (!user) return; // return if not logged in
+
   const favorites = await getHousingBookmarksAPI();
   if (favorites) {
     dispatch(setHousingFavorites(favorites));
@@ -150,7 +156,15 @@ export const getHousingFavorites = (): AppThunk => async (dispatch) => {
 
 export const newHousingFavorite = (housePost: HousePost): AppThunk => async (
   dispatch,
+  getState,
 ) => {
+  // if not logged in
+  const { user } = getState().auth;
+  if (!user) {
+    dispatch(addToHousingFavorites(housePost));
+    return;
+  }
+
   // TODO eventually change the housePost in here to just be the housePostId
   const result = await addHousingBookmarkAPI(housePost.roomId);
   if (result) {
@@ -162,7 +176,15 @@ export const newHousingFavorite = (housePost: HousePost): AppThunk => async (
 
 export const removeHousingFavorite = (roomId: number): AppThunk => async (
   dispatch,
+  getState,
 ) => {
+  // if not logged in
+  const { user } = getState().auth;
+  if (!user) {
+    dispatch(removeFromHousingFavorites(roomId));
+    return;
+  }
+
   const result = await removeHousingBookmarkAPI(roomId);
   if (result) {
     dispatch(removeFromHousingFavorites(roomId));
