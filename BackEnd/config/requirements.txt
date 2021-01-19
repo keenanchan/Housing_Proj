@@ -26,3 +26,5 @@ boto3
 awscli
 Flask-SQLAlchemy
 mysqlclient
+python-twitter
+oauth2

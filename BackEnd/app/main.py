@@ -20,6 +20,10 @@ from db.crud import room_json, read_rooms, write_room, add_bookmark, \
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db/housing.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['APP_CONSUMER_KEY'] = os.getenv(
+    'CONSUMER_KEY', 'API_Key_from_Twitter')
+app.config['APP_CONSUMER_SECRET'] = os.getenv(
+    'CONSUMER_SECRET', 'API_SECRET_from_Twitter')
 db = SQLAlchemy(app)
 app.register_blueprint(authetication)
 app.config['CORS_HEADERS'] = 'Content-Type'

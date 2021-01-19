@@ -6,6 +6,8 @@ import Home from './components/Home';
 import Landing from './components/Landing';
 import { setUser } from './redux/slices/auth';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Twitter from './components/Twitter';
+import TwitterStats from './components/TwitterStats';
 
 function App() {
   // const cookies = new Cookies();
@@ -24,6 +26,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/landing" component={Landing} />
+          <Route exact path="/twitter" component={Twitter} />
+          <Route exact path="/twitter_stats" component={TwitterStats} />
         </Switch>
       </div>
     </Router>
