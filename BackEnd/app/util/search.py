@@ -7,7 +7,7 @@ def compareMonth(early, late, curr):
     ear_interval, ear_month = early  # tuple
     lat_interval, lat_month = late
     interval, month = curr
-    print(curr, interval, month)
+    print(ear_interval, ear_month, lat_interval, lat_month, interval, month)
     interval_rank, month_rank = intervals.index(interval), months.index(month)
     earinterval_rank, earmonth_rank = intervals.index(
         ear_interval), months.index(ear_month)
