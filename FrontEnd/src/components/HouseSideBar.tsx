@@ -20,8 +20,6 @@ const HouseSideBar: React.FC<HouseSideBarProps> = ({
   return (
     <div className="house-sidebar-container">
       <TV>
-        <div className="special-text mt-3">Hello</div>
-        <div className="tv-separator" />
         {!user ? (
           <>
             <Button variant="secondary" onClick={onLoginClick}>

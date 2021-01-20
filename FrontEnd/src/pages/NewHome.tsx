@@ -7,6 +7,7 @@ import Login from '../components/Login';
 import HousingPost from '../components/HousingPostForm';
 import NewUserSetup from '../components/NewUserSetup';
 import HouseSideBar from '../components/HouseSideBar';
+import Col from 'react-bootstrap/Col';
 
 const NewHome: React.FC = () => {
   const showNewUserPopup = useSelector(selectShowNewUserPopup);
@@ -37,9 +38,9 @@ const NewHome: React.FC = () => {
       {/* The actual home page */}
       <div className="new-home">
         <div className="new-home-main">
-          <div className="new-home-filter">
+          <Col className="new-home-filter">
             <Filter />
-          </div>
+          </Col>
 
           <HouseCardList />
         </div>

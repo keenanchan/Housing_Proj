@@ -75,7 +75,7 @@
     font-family: $secondary-font-stack;
     font-weight: $bold-font-weight;
     font-size: $md-font-size;
-    color: $primary-dark-color;
+    color: $primary-5-color;
   } @else {
     @error "#{$type} is not one of the available font styles. \
             Check _mixins.scss to see which font styles you can use.";
