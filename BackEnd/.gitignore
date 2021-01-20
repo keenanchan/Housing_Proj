@@ -1,5 +1,0 @@
-config/venv
-app/img
-/__pycache__
-/.vscode
-**/housing.db
