@@ -1,0 +1,11 @@
+{
+  "root": true,
+  "extends": ["airbnb-typescript-prettier"],
+  "rules": {
+    "no-underscore-dangle": ["error", { "allow": ["_420", "_420Chosen"] }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "radix": "off",
+    "no-param-reassign": "off",
+    "consistent-return": ["error", { "treatUndefinedAsUnspecified": true }] // why does the option not work
+  }
+}
