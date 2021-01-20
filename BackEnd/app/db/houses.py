@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from app.util.aws.s3 import get_images, upload_file_wname
-from app.assets.options import months, intervals, others, facilities, school_years, room_types, addresses_generate
+from app.assets.options import months, intervals, others, facilities as facs, school_years, room_types, addresses_generate
 from crud import add_user, \
     add_room, add_move_in, add_house_attribute, add_attribute
 import os
@@ -97,7 +97,7 @@ for attr in others:
     temp_attr = add_attribute(attr, 'other', session)
     attributes.append(temp_attr)
     looking_for.append(temp_attr)
-for attr in facilities:
+for attr in facs:
     temp_attr = add_attribute(attr, 'facilities', session)
     attributes.append(temp_attr)
     facilities.append(temp_attr)
