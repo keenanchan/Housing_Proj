@@ -28,15 +28,12 @@ def compareMonth(early, late, curr, flag="early", reverse=False):
         return early_check and late_check
     else:
         if flag == "early":
-            return (month > ear_month) or
-            (month == ear_month and interval >= ear_interval)
+            return (month > ear_month) or (month == ear_month and interval >= ear_interval)
         else:
             if reverse:
-                return (lat_month > month) or (month == lat_month
-                                               and interval <= lat_interval)
+                return (lat_month > month) or (month == lat_month and interval <= lat_interval)
             else:
-                return (month > ear_month) or (month == ear_month
-                                               and interval >= ear_interval)
+                return (month > ear_month) or (month == ear_month and interval >= ear_interval)
 
 
 def checkOther(house, request):
