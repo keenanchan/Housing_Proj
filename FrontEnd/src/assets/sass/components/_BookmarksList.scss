@@ -1,17 +1,17 @@
-// TODO change the widths/heights to not use exact values. need to allow them to be reactive
 .bookmarks-list {
   @include thin-border('sm', $primary-3-color);
 
+  display: flex;
+  flex-direction: column;
   background-color: $primary-2-color;
   border-radius: 22px;
-  width: 220px;
+  width: $bookmarks-list-width;
   height: 100%;
   overflow-y: hidden;
   text-align: center;
 
   &-bookmarks {
     overflow-y: auto;
-    height: calc(95% - 5vh);
   }
 
   &-title {

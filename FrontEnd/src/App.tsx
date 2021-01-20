@@ -1,29 +1,24 @@
 import React, { useEffect } from 'react';
-import Cookies from 'universal-cookie';
-import { useDispatch } from 'react-redux';
 import NavBar from './components/NavBar';
-import Home from './components/Home';
-import Landing from './components/Landing';
-import { setUser } from './redux/slices/auth';
+import Home from './pages/Home';
+import Landing from './pages/Landing';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import NewHome from './pages/NewHome';
 
 function App() {
-  // const cookies = new Cookies();
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   // dispatch to redux setting the user
-  //   if (cookies.get('user')) {
-  //     dispatch(setUser(cookies.get('user')));
-  //   }
-  // }, [cookies, dispatch]);
-
   return (
     <Router>
       <div className="App">
-        <NavBar />
         <Switch>
-          <Route exact path="/" component={Home} />
           <Route exact path="/landing" component={Landing} />
+
+          <div>
+            <NavBar />
+            <Switch>
+              <Route exact path="/testnewhome" component={NewHome} />
+              <Route path="/" component={Home} />
+            </Switch>
+          </div>
         </Switch>
       </div>
     </Router>

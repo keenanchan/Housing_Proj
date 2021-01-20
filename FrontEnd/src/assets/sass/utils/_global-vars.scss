@@ -51,12 +51,10 @@ $xs-font-size: 12px;
 /**
  * STYLE GUIDE OTHER VARS.
  */
-// TODO
 $lg-border-radius: 22px;
 $sm-border-radius: 10px;
 $input-border-radius: 8px;
 
-// TODO
 $lg-modal-height: 600px;
 
 /**
@@ -83,4 +81,6 @@ $default-border-width: 3px;
 /**
  * WEBSITE DESIGN VARIABLES.
  */
-$navbar-height: 12.5%;
+$navbar-height: 12.5vh;
+$bookmarks-list-width: 220px;
+$filter-top-margin: 5vh;

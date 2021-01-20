@@ -23,9 +23,9 @@ const BookmarksList: React.FC = () => {
         <bookmarkIcons.bookmark className="mr-2 mb-auto align-self-baseline" />
         <span className="bookmarks-list-title">Bookmarks</span>
       </div>
+
       <div className="bookmarks-list-bookmarks">
         {favorites &&
-          // TODO this should be handled within the loader component (not yet made)
           Object.values(favorites).map((favorite) => (
             <div key={favorite.roomId} className="w-100 mb-1 px-1">
               <Bookmark {...favorite} />
@@ -33,7 +33,6 @@ const BookmarksList: React.FC = () => {
           ))}
         <div className="bookmarks-list-none-message">
           {favorites &&
-            // TODO this should be handled within the loader component (not yet made)
             Object.keys(favorites).length === 0 &&
             (user
               ? 'Your bookmarked housings will appear here!'

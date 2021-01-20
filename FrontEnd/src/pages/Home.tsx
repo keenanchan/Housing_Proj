@@ -5,14 +5,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { selectShowNewUserPopup, selectUser } from '../redux/slices/auth';
-import HouseCardList from './HouseCardList';
-import Filter from './Filter';
-import TV from './TV';
-import Login from './Login';
-import HousingPost from './HousingPostForm';
-import BookmarksList from './BookmarksList';
-import NewUserSetup from './NewUserSetup';
-import SlideShow, { testSlideShow } from './basics/SlideShow/index';
+import HouseCardList from '../components/HouseCardList';
+import Filter from '../components/Filter';
+import TV from '../components/TV';
+import Login from '../components/Login';
+import HousingPost from '../components/HousingPostForm';
+import BookmarksList from '../components/BookmarksList';
+import NewUserSetup from '../components/NewUserSetup';
 
 const Home: React.FC = () => {
   const showNewUserPopup = useSelector(selectShowNewUserPopup);
@@ -58,24 +57,19 @@ const Home: React.FC = () => {
         <div className="home-sidebar d-flex flex-column">
           <div className="mb-3">
             <TV>
-              {/* TODO !user will be hardcoded to false while new-user-popup is being worked on */}
+              <div className="special-text mt-3">Hello</div>
+              <div className="tv-separator" />
               {!user ? (
                 <>
-                  <div className="special-text mt-3">Hello</div>
-                  <div className="tv-separator" />
                   <Button variant="secondary" onClick={handleShowLogin}>
                     Sign in to post
                   </Button>
                 </>
               ) : (
                 <>
-                  {/* TODO this is temporary for while the 'Post ur request' is disabled */}
-                  <div className="special-text mt-3">Hello</div>
-                  <div className="tv-separator" />
                   <Button variant="secondary" onClick={handleShowHousingPost}>
                     Post here
                   </Button>
-                  {/* <Button>Post ur request</Button> */}
                 </>
               )}
             </TV>

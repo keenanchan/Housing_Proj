@@ -1,0 +1,16 @@
+.house-sidebar {
+  &-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: $filter-top-margin;
+    padding-bottom: 5vh;
+  }
+
+  &-bookmarks-container {
+    padding-top: 3vh;
+    flex-grow: 1;
+    overflow-y: hidden;
+  }
+}

@@ -7,7 +7,7 @@ $side-bar-top: $navbar-height;
   //padding-top: $padding-y;
   padding-bottom: $padding-y;
   right: 8.45vw;
-  height: 100% - $navbar-height;
+  height: calc(100% - $navbar-height);
 }
 
 .home-bookmarks-list-wrapper {

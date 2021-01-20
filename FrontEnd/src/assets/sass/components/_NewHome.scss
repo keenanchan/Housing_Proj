@@ -1,0 +1,18 @@
+$sidebar-width: 250px;
+$sidebar-offset: calc(100vw - $sidebar-width);
+$filter-height: 5vh;
+
+.new-home {
+  &-main {
+    margin-right: $sidebar-width;
+    margin-top: $filter-top-margin;
+  }
+
+  &-sidebar {
+    position: fixed;
+    width: $sidebar-width;
+    top: $navbar-height;
+    right: 0;
+    height: calc(100vh - #{$navbar-height});
+  }
+}
