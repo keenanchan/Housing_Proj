@@ -21,3 +21,10 @@
   letter-spacing: 0.2em;
   color: $secondary-color !important;
 }
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  margin: 0 $entire-site-margin-x;;
+  width: 100%;
+}

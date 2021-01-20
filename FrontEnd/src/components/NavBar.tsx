@@ -19,7 +19,7 @@ const NavBar: React.FC = () => {
       <ProfileModal show={showProfile} setShow={setShowProfile} />
 
       <Navbar sticky="top" className="navbar-wrapper p-0 m-0 mb-4">
-        <Container className="d-flex align-items-center my-0">
+        <div className="navbar-container">
           <div className="mr-auto">
             <a className="navbar-brand" href="/">
               <navIcons.logo className="navbar-logo-svg" />
@@ -54,7 +54,7 @@ const NavBar: React.FC = () => {
               </>
             )}
           </div>
-        </Container>
+        </div>
       </Navbar>
     </>
   );

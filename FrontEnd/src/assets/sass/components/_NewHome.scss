@@ -4,7 +4,8 @@ $filter-height: 5vh;
 
 .new-home {
   &-main {
-    margin-right: $sidebar-width;
+    margin-right: calc(#{$sidebar-width} + #{$entire-site-margin-x});
+    margin-left: $entire-site-margin-x;
     margin-top: $filter-top-margin;
   }
 
@@ -12,7 +13,11 @@ $filter-height: 5vh;
     position: fixed;
     width: $sidebar-width;
     top: $navbar-height;
-    right: 0;
+    right: $entire-site-margin-x;
     height: calc(100vh - #{$navbar-height});
+  }
+
+  &-filter {
+    padding-bottom: 5vh;
   }
 }

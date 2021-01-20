@@ -32,8 +32,7 @@ const BookmarksList: React.FC = () => {
             </div>
           ))}
         <div className="bookmarks-list-none-message">
-          {favorites &&
-            Object.keys(favorites).length === 0 &&
+          {(!favorites || (favorites && Object.keys(favorites).length === 0)) &&
             (user
               ? 'Your bookmarked housings will appear here!'
               : 'Sign in to save your bookmarks permanently.')}

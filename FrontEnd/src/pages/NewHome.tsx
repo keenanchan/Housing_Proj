@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import { selectShowNewUserPopup, selectUser } from '../redux/slices/auth';
 import HouseCardList from '../components/HouseCardList';
 import Filter from '../components/Filter';
-import TV from '../components/TV';
 import Login from '../components/Login';
 import HousingPost from '../components/HousingPostForm';
-import BookmarksList from '../components/BookmarksList';
 import NewUserSetup from '../components/NewUserSetup';
 import HouseSideBar from '../components/HouseSideBar';
 
@@ -43,7 +37,10 @@ const NewHome: React.FC = () => {
       {/* The actual home page */}
       <div className="new-home">
         <div className="new-home-main">
-          <Filter />
+          <div className="new-home-filter">
+            <Filter />
+          </div>
+
           <HouseCardList />
         </div>
 

@@ -60,9 +60,10 @@ export const housingSlice = createSlice({
       action: PayloadAction<HousePost[] | undefined>,
     ) => {
       state.favorites = {};
+      const newFavorites = action.payload;
 
-      if (action.payload) {
-        action.payload.forEach((housePost) => {
+      if (newFavorites) {
+        newFavorites.forEach((housePost) => {
           if (state.favorites) state.favorites[housePost.roomId] = housePost;
         });
       }
@@ -138,7 +139,7 @@ export const newHousingPost = (
 };
 
 export const resetHousingFavorites = (): AppThunk => async (dispatch) => {
-  dispatch(setHousingFavorites([]));
+  dispatch(setHousingFavorites(undefined));
 };
 
 export const getHousingFavorites = (): AppThunk => async (
