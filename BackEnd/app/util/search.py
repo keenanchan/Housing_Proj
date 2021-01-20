@@ -29,7 +29,9 @@ def checkOther(house, request):
 def search(room_json, session):
     res = session.query(Room).filter(room_json['price_min'] <= Room.price,
                                      Room.price <= room_json['price_max'],
-                                     Room.address.has(Address.distance < room_json['distance']),
+                                     Room.address.has(
+                                         float(Address.distance.split(" ")[0])
+                                         < float(room_json['distance'].split(" ")[0])),
                                      Room.stay_period == room_json['stay_period'],
                                      Room.no_rooms >= float(
                                          room_json['numBeds']),
