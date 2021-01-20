@@ -61,7 +61,7 @@ ali = add_user("ali", "ali@ucsd.edu", datetime.now(), "858-4675432",
                descriptions[KEENAN],  'Grad',
                "Computer Science and Engineering",
                session)
-users = [adam, cris, amit, keenan]
+users = [adam, cris, amit, keenan, sonia, ali]
 descriptions = [
     """
     I’m looking for a roommate for a double for the summer. 
