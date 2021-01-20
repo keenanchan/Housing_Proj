@@ -6,28 +6,27 @@ import { moveInSelect } from '../../assets/utils';
 import { WizardFormStep } from '../basics/WizardForm';
 import Dropdown from '../basics/Dropdown';
 
-export const page4Schema = z
-  .object({
-    earlyInterval: z.nativeEnum(Interval),
-    earlyMonth: z.nativeEnum(Month),
-    lateInterval: z.nativeEnum(Interval),
-    lateMonth: z.nativeEnum(Month),
-    stayPeriod: z.number().min(1, 'Stay for a month at least!'),
-  })
-  .refine(
-    (vals) =>
-      // TODO make this validation work
-      moveInSelect(
-        vals.earlyMonth as string,
-        vals.earlyInterval as string,
-        vals.lateMonth as string,
-        vals.lateInterval as string,
-      ),
-    {
-      message: 'The given interval is invalid!',
-      path: ['lateMonth'],
-    },
-  );
+export const page4Schema = z.object({
+  earlyInterval: z.nativeEnum(Interval),
+  earlyMonth: z.nativeEnum(Month),
+  lateInterval: z.nativeEnum(Interval),
+  lateMonth: z.nativeEnum(Month),
+  stayPeriod: z.number().min(1, 'Stay for a month at least!'),
+});
+// .refine(
+//   (vals) =>
+//     // TODO make this validation work
+//     moveInSelect(
+//       vals.earlyMonth as string,
+//       vals.earlyInterval as string,
+//       vals.lateMonth as string,
+//       vals.lateInterval as string,
+//     ),
+//   {
+//     message: 'The given interval is invalid!',
+//     path: ['lateMonth'],
+//   },
+// );
 
 export type Page4Store = z.infer<typeof page4Schema>;
 
