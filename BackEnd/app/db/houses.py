@@ -217,7 +217,7 @@ for i in range(len(hardcoded_price)):
     for temp_attr in hardcoded_faci[i]:
         add_house_attribute(temp_room, temp_attr, session)
     hardcoded_rooms.append(temp_room)
-for i in range(k):
+for i in range(len(hardcoded_price)):
     path_name = "/".join(["user"+str(hardcoded_users[i].id), 'housing',
                           str(hardcoded_rooms[i].id)])
     random_files = random.sample(os.listdir(file_dir), 4)
