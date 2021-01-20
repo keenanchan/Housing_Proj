@@ -1,17 +1,23 @@
-$side-bar-top: $navbar-height;
-.home-sidebar {
-  $padding-y: 20px;
+$sidebar-width: 250px;
+$sidebar-offset: calc(100vw - $sidebar-width);
+$filter-height: 5vh;
 
-  position: fixed;
-  //top: $side-bar-top;
-  //padding-top: $padding-y;
-  padding-bottom: $padding-y;
-  right: 8.45vw;
-  height: calc(100% - $navbar-height);
+.home {
+  &-main {
+    margin-right: calc(#{$sidebar-width} + #{$entire-site-margin-x});
+    margin-left: $entire-site-margin-x;
+    margin-top: $filter-top-margin;
+  }
+
+  &-sidebar {
+    position: fixed;
+    width: $sidebar-width;
+    top: $navbar-height;
+    right: $entire-site-margin-x;
+    height: calc(100vh - #{$navbar-height});
+  }
+
+  &-filter {
+    padding-bottom: 5vh;
+  }
 }
-
-.home-bookmarks-list-wrapper {
-  //height: 100%;
-  overflow-y: hidden;
-}
-

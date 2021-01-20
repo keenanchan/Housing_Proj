@@ -3,8 +3,9 @@
   @include thin-border('sm');
 
   background-color: white;
+  height: 70px;
   width: 100%;
-  border-radius: $sm-border-radius;
+  border-radius: 15px;
   display: flex;
 
   img {
@@ -12,7 +13,7 @@
     @extend .mr-2;
 
     display: block;
-    border-radius: $sm-border-radius;
+    border-radius: 13px;
     width: 65px;
     height: 100%;
     align-self: center;
