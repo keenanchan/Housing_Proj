@@ -27,7 +27,7 @@ def checkOther(house, request):
 
 
 def search(room_json, session):
-    res = session.query(Room).join(Address).filter(
+    res = session.query.join(Address, Room).filter(
         room_json['price_min'] <= Room.price,
         Room.price <= room_json['price_max'],
         Room.stay_period == room_json['stay_period'],
