@@ -151,7 +151,7 @@ hardcoded_moveins = [
 ]
 hardcoded_bbs = [(2, 2), (1, 1.5), (2, 0.5), (1, 1), (1, 2)]
 hardcoded_stays = [3, 6, 9, 12, 3]
-hardcoded_looking = [[looking_for[1], looking_for[5], looking_for[12], others[-2]],
+hardcoded_looking = [[looking_for[1], looking_for[5], looking_for[12], looking_for[-2]],
                      [looking_for[1], looking_for[others.index('No party')],
                       looking_for[others.index('Smoke free')],
                       looking_for[others.index('No overnight Guest')]],
