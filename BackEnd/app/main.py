@@ -17,6 +17,8 @@ import json
 from db.crud import room_json, read_rooms, write_room, add_bookmark, \
     remove_bookmark, update_field
 
+from app.util.spotify import search_songs
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db/housing.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -97,6 +99,24 @@ def bookmark():
         message, status = 'Successfully deleted bookmark.', 200
     return generateResponse(elem=message, status=status)
 
+@ app.route('/spotify', methods=['GET'])
+def spotify():
+    result = search_songs('chopin')
+    json_response = {'songs': []}
+    if result:
+        json_response['songs'] = result
+    return generateResponse(json_response)
+
+@ app.route('/spotify_search', methods=['POST', 'OPTIONS'])
+def spotify_search():
+    if request.method == 'OPTIONS':
+        return generateResponse()
+    requested_json = request.json
+    result = search_songs(requested_json['query'])
+    json_response = {'songs': []}
+    if result:
+        json_response['songs'] = result
+    return generateResponse(json_response)
 
 if __name__ == '__main__':
     app.secret_key = b'\xb7\xe2\xd6\xa3\xe2\xe0\x11\xd1\x92\xf1\x92G&>\xa2:'
