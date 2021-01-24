@@ -20,7 +20,12 @@ def search_songs(artist):
     results = sp.search(q='artist:'+artist, limit=20)
     #items = results['artists']['items']
     items = []
+    images = []
+
     for idx, track in enumerate(results['tracks']['items']):
         items.append(track['name'])
-    print(items)
+        images.append(track['album']['images'][0]['url'])
+    # print(results['tracks']['items'][0]['album']['images'])
+    # print(items)
+    print(images)
     return items
