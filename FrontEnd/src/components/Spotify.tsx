@@ -4,9 +4,9 @@ import { backendAPI } from '../apis/apiBases';
 import Input from './basics/Input';
 
 export default function Spotify() {
-  const [songs, setSongs] = useState<string[]>([]);
+  const [songs, setSongs] = useState<any[]>([]); // use a SongModel in future!
   const [query, setQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
 
   const spotifyGet = async () => {
     try {
@@ -16,8 +16,8 @@ export default function Spotify() {
       console.log(result);
 
       if (result.request?.status !== 200) throw Error('Bad request');
-      setSongs(result.data.songs);
-      return result.data.songs;
+      setSongs(result.data.items);
+      return result.data.items;
     } catch (err) {
       console.log(err);
       return undefined;
@@ -39,7 +39,7 @@ export default function Spotify() {
       console.log(result);
       if (result.request?.status != 200) throw Error('Bad request');
 
-      return result.data.songs;
+      return result.data.items;
     } catch (err) {
       console.error(err);
       return undefined;
@@ -53,11 +53,14 @@ export default function Spotify() {
     <div>
       {/* search chopin (no token, hardcoded) */}
       <h1>Songs</h1>
-      <ol>
-        {songs?.map((song) => (
-          <li>{song}</li>
-        ))}
-      </ol>
+      {/* <ul> */}
+      {songs?.map((song) => (
+        <div>
+          <img src={song.image} />
+          {song.name}
+        </div>
+      ))}
+      {/* </ul> */}
 
       <br />
 
@@ -74,11 +77,14 @@ export default function Spotify() {
       {searchResults ? (
         <>
           <h1>Songs</h1>
-          <ol>
-            {searchResults?.map((result) => (
-              <li>{result}</li>
-            ))}
-          </ol>
+          {/* <ul> */}
+          {searchResults?.map((result) => (
+            <div>
+              <img src={result.image} />
+              {result.name}
+            </div>
+          ))}
+          {/* </ul> */}
         </>
       ) : (
         <></>

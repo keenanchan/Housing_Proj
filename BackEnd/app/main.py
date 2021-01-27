@@ -102,9 +102,9 @@ def bookmark():
 @ app.route('/spotify', methods=['GET'])
 def spotify():
     result = search_songs('chopin')
-    json_response = {'songs': []}
+    json_response = {'items': []}
     if result:
-        json_response['songs'] = result
+        json_response['items'] = result
     return generateResponse(json_response)
 
 @ app.route('/spotify_search', methods=['POST', 'OPTIONS'])
@@ -113,9 +113,9 @@ def spotify_search():
         return generateResponse()
     requested_json = request.json
     result = search_songs(requested_json['query'])
-    json_response = {'songs': []}
+    json_response = {'items': []}
     if result:
-        json_response['songs'] = result
+        json_response['items'] = result
     return generateResponse(json_response)
 
 if __name__ == '__main__':

@@ -23,9 +23,10 @@ def search_songs(artist):
     images = []
 
     for idx, track in enumerate(results['tracks']['items']):
-        items.append(track['name'])
-        images.append(track['album']['images'][0]['url'])
+        items.append({
+            'name': track['name'],
+            'image': track['album']['images'][0]['url']
+        })
     # print(results['tracks']['items'][0]['album']['images'])
-    # print(items)
-    print(images)
+    print(items)
     return items
