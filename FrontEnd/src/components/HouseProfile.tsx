@@ -20,6 +20,7 @@ import {
   miscIcons,
   largeAmenitiesIcons,
 } from '../assets/icons/all';
+import Login from './Login';
 import { LOGIN_TO_VIEW } from '../assets/constants/messages';
 import { HousePost } from '../assets/models/PostModels';
 import { Month } from '../assets/constants';
@@ -127,6 +128,13 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
   const [moveIn, setMoveIn] = useState<string>('');
   const [slideShowItems, setSlideShowItems] = useState<SlideShowItem[]>([]);
 
+  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const handleCloseLogin = () => setShowLogin(false);
+  const handleShowLogin = () => setShowLogin(true);
+
+  const [mailTooltip, setMailTooltip] = useState<string>(leaserEmail);
+  const [phoneTooltip, setPhoneTooltip] = useState<string>(leaserPhone);
+
   // set the slide show content
   useEffect(() => {
     setSlideShowItems(
@@ -177,6 +185,8 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
       >
         {aboveModalContent}
       </div>
+
+      <Login show={showLogin} handleClose={handleCloseLogin} />
 
       <Container className="p-0">
         <Row>
@@ -337,7 +347,7 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                       placement="bottom"
                       overlay={
                         <Tooltip id="tooltip">
-                          {user ? leaserEmail : LOGIN_TO_VIEW}
+                          {user ? mailTooltip : LOGIN_TO_VIEW}
                         </Tooltip>
                       }
                     >
@@ -346,9 +356,13 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                         onClick={async () => {
                           if (user) {
                             await navigator.clipboard.writeText(leaserEmail);
-                            window.open(`mailto:${leaserEmail}`, '_blank');
+                            setMailTooltip('Copied to Clipboard!');
+                            // window.open(`mailto:${leaserEmail}`, '_blank');
+                          } else {
+                            handleShowLogin();
                           }
                         }}
+                        onMouseLeave={() => setMailTooltip(leaserEmail)}
                       />
                     </OverlayTrigger>
 
@@ -356,7 +370,7 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                       placement="bottom"
                       overlay={
                         <Tooltip id="tooltip">
-                          {user ? leaserPhone : LOGIN_TO_VIEW}
+                          {user ? phoneTooltip : LOGIN_TO_VIEW}
                         </Tooltip>
                       }
                     >
@@ -365,9 +379,13 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                         onClick={async () => {
                           if (user) {
                             await navigator.clipboard.writeText(leaserPhone);
-                            window.open(`tel:${leaserPhone}`, '_blank');
+                            setPhoneTooltip('Copied to Clipboard!');
+                            // window.open(`tel:${leaserPhone}`, '_blank');
+                          } else {
+                            handleShowLogin();
                           }
                         }}
+                        onMouseLeave={() => setPhoneTooltip(leaserPhone)}
                       />
                     </OverlayTrigger>
                   </Row>
