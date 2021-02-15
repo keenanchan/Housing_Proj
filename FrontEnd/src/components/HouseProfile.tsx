@@ -13,6 +13,7 @@ import {
   newHousingFavorite,
   removeHousingFavorite,
 } from '../redux/slices/housing';
+import { selectShowLoginPopup, setShowLoginPopup } from '../redux/slices/auth';
 import GoogleMap from './GoogleMap';
 import SlideShow, { SlideShowItem } from './basics/SlideShow/index';
 import {
@@ -20,7 +21,6 @@ import {
   miscIcons,
   largeAmenitiesIcons,
 } from '../assets/icons/all';
-import Login from './Login';
 import { LOGIN_TO_VIEW } from '../assets/constants/messages';
 import { HousePost } from '../assets/models/PostModels';
 import { Month } from '../assets/constants';
@@ -124,13 +124,10 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
 }) => {
   const favorites = useSelector(selectHousingFavorites);
   const user = useSelector(selectUser);
+  const showLogin = useSelector(selectShowLoginPopup);
   const dispatch = useDispatch();
   const [moveIn, setMoveIn] = useState<string>('');
   const [slideShowItems, setSlideShowItems] = useState<SlideShowItem[]>([]);
-
-  const [showLogin, setShowLogin] = useState<boolean>(false);
-  const handleCloseLogin = () => setShowLogin(false);
-  const handleShowLogin = () => setShowLogin(true);
 
   const [mailTooltip, setMailTooltip] = useState<string>(leaserEmail);
   const [phoneTooltip, setPhoneTooltip] = useState<string>(leaserPhone);
@@ -186,7 +183,7 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
         {aboveModalContent}
       </div>
 
-      <Login show={showLogin} handleClose={handleCloseLogin} />
+      {/* <Login show={showLogin} handleClose={handleCloseLogin} /> */}
 
       <Container className="p-0">
         <Row>
@@ -359,7 +356,8 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                             setMailTooltip('Copied to Clipboard!');
                             // window.open(`mailto:${leaserEmail}`, '_blank');
                           } else {
-                            handleShowLogin();
+                            onHide();
+                            dispatch(setShowLoginPopup(true));
                           }
                         }}
                         onMouseLeave={() => setMailTooltip(leaserEmail)}
@@ -382,7 +380,8 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                             setPhoneTooltip('Copied to Clipboard!');
                             // window.open(`tel:${leaserPhone}`, '_blank');
                           } else {
-                            handleShowLogin();
+                            onHide();
+                            dispatch(setShowLoginPopup(true));
                           }
                         }}
                         onMouseLeave={() => setPhoneTooltip(leaserPhone)}

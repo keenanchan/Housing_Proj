@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import { selectShowNewUserPopup, selectUser } from '../redux/slices/auth';
+import {
+  selectShowNewUserPopup,
+  selectUser,
+  selectShowLoginPopup,
+  setShowLoginPopup,
+} from '../redux/slices/auth';
 import HouseCardList from './HouseCardList';
 import Filter from './Filter';
 import TV from './TV';
@@ -15,12 +20,11 @@ import NewUserSetup from './NewUserSetup';
 import SlideShow, { testSlideShow } from './basics/SlideShow/index';
 
 const Home: React.FC = () => {
-  const showNewUserPopup = useSelector(selectShowNewUserPopup);
-  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
-  const [showLogin, setShowLogin] = useState<boolean>(false);
-  const handleCloseLogin = () => setShowLogin(false);
-  const handleShowLogin = () => setShowLogin(true);
+  const showNewUserPopup = useSelector(selectShowNewUserPopup);
+  const showLoginPopup = useSelector(selectShowLoginPopup);
+  const user = useSelector(selectUser);
 
   const [showHousingPost, setShowHousingPost] = useState<boolean>(false);
   const handleShowHousingPost = () => setShowHousingPost(true);
@@ -28,7 +32,10 @@ const Home: React.FC = () => {
   return (
     <Container fluid>
       {/* Modals */}
-      <Login show={showLogin} handleClose={handleCloseLogin} />
+      <Login
+        show={showLoginPopup}
+        handleClose={() => dispatch(setShowLoginPopup(false))}
+      />
       <HousingPost show={showHousingPost} setShow={setShowHousingPost} />
 
       {showNewUserPopup !== undefined && ( // TODO temporary. Should handle in the wizard form i think
@@ -63,7 +70,10 @@ const Home: React.FC = () => {
                 <>
                   <div className="special-text mt-3">Hello</div>
                   <div className="tv-separator" />
-                  <Button variant="secondary" onClick={handleShowLogin}>
+                  <Button
+                    variant="secondary"
+                    onClick={() => dispatch(setShowLoginPopup(true))}
+                  >
                     Sign in to post
                   </Button>
                 </>

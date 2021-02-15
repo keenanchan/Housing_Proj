@@ -21,12 +21,14 @@ interface AuthState {
   user?: User;
   userDraft?: User; // TODO change this to not be stored in redux and cookies
   showNewUserPopup?: UserNameEmail;
+  showLoginPopup: boolean;
 }
 
 const initialState: AuthState = {
   user: cookies.get<User>('user'),
   userDraft: cookies.get<User>('userDraft'),
   showNewUserPopup: undefined,
+  showLoginPopup: false
 };
 
 export const authSlice = createSlice({
@@ -64,6 +66,9 @@ export const authSlice = createSlice({
     endNewUserFlow: (state) => {
       state.showNewUserPopup = undefined;
     },
+    setShowLoginPopup: (state, action: PayloadAction<boolean>) => {
+      state.showLoginPopup = action.payload;
+    }
   },
 });
 
@@ -73,6 +78,7 @@ export const {
   setUserDraft,
   startNewUserFlow,
   endNewUserFlow,
+  setShowLoginPopup,
 } = authSlice.actions;
 
 // Thunks here
@@ -159,7 +165,8 @@ const selectUser = (state: RootState) => state.auth.user;
 const selectUserDraft = (state: RootState) => state.auth.userDraft;
 const selectShowNewUserPopup = (state: RootState) =>
   state.auth.showNewUserPopup;
-export { selectUser, selectUserDraft, selectShowNewUserPopup };
+const selectShowLoginPopup = (state: RootState) => state.auth.showLoginPopup;
+export { selectUser, selectUserDraft, selectShowNewUserPopup, selectShowLoginPopup };
 
 // Export everything
 export default authSlice.reducer;
