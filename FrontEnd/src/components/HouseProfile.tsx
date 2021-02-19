@@ -13,7 +13,11 @@ import {
   newHousingFavorite,
   removeHousingFavorite,
 } from '../redux/slices/housing';
-import { selectShowLoginPopup, setShowLoginPopup } from '../redux/slices/auth';
+import {
+  selectUser,
+  setReopenHouseProfile,
+  setShowLoginPopup,
+} from '../redux/slices/auth';
 import GoogleMap from './GoogleMap';
 import SlideShow, { SlideShowItem } from './basics/SlideShow/index';
 import {
@@ -30,7 +34,6 @@ import {
   abbreviateMoveIn,
   formatRoomType,
 } from '../assets/utils';
-import { selectUser } from '../redux/slices/auth';
 
 const Ellipse: React.FC<{}> = () => (
   <Row className="justify-content-center">
@@ -87,6 +90,7 @@ export interface HouseProfileProps extends Omit<HousePost, 'roomId'> {
   roomId?: number;
   show: boolean;
   onHide: () => any;
+  onShow?: () => any;
   aboveModalContent?: React.ReactNode;
   aboveModalContentClassName?: string;
   modalClassName?: string;
@@ -114,6 +118,7 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
   facilities,
   show,
   onHide,
+  onShow,
   aboveModalContent,
   aboveModalContentClassName = '',
   modalClassName = '',
@@ -124,7 +129,6 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
 }) => {
   const favorites = useSelector(selectHousingFavorites);
   const user = useSelector(selectUser);
-  const showLogin = useSelector(selectShowLoginPopup);
   const dispatch = useDispatch();
   const [moveIn, setMoveIn] = useState<string>('');
   const [slideShowItems, setSlideShowItems] = useState<SlideShowItem[]>([]);
@@ -357,6 +361,7 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                             // window.open(`mailto:${leaserEmail}`, '_blank');
                           } else {
                             onHide();
+                            onShow && dispatch(setReopenHouseProfile(onShow()));
                             dispatch(setShowLoginPopup(true));
                           }
                         }}
@@ -381,6 +386,7 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                             // window.open(`tel:${leaserPhone}`, '_blank');
                           } else {
                             onHide();
+                            onShow && dispatch(setReopenHouseProfile(onShow()));
                             dispatch(setShowLoginPopup(true));
                           }
                         }}

@@ -9,6 +9,8 @@ import {
   selectUser,
   selectShowLoginPopup,
   setShowLoginPopup,
+  selectReopenHouseProfile,
+  setReopenHouseProfile,
 } from '../redux/slices/auth';
 import HouseCardList from './HouseCardList';
 import Filter from './Filter';
@@ -24,6 +26,7 @@ const Home: React.FC = () => {
 
   const showNewUserPopup = useSelector(selectShowNewUserPopup);
   const showLoginPopup = useSelector(selectShowLoginPopup);
+  const reopenHouseProfile = useSelector(selectReopenHouseProfile);
   const user = useSelector(selectUser);
 
   const [showHousingPost, setShowHousingPost] = useState<boolean>(false);
@@ -34,7 +37,11 @@ const Home: React.FC = () => {
       {/* Modals */}
       <Login
         show={showLoginPopup}
-        handleClose={() => dispatch(setShowLoginPopup(false))}
+        handleClose={() => {
+          dispatch(setShowLoginPopup(false));
+          reopenHouseProfile && reopenHouseProfile();
+          dispatch(setReopenHouseProfile(() => {}));
+        }}
       />
       <HousingPost show={showHousingPost} setShow={setShowHousingPost} />
 

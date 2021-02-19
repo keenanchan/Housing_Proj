@@ -105,6 +105,7 @@ const HouseCard: React.FC<PathProps> = ({
         roomDescription={roomDescription}
         roomId={roomId}
         show={show}
+        onShow={() => setShow(true)}
         onHide={() => setShow(false)}
         negotiable={negotiable}
         numBaths={numBaths}

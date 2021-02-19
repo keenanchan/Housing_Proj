@@ -22,13 +22,15 @@ interface AuthState {
   userDraft?: User; // TODO change this to not be stored in redux and cookies
   showNewUserPopup?: UserNameEmail;
   showLoginPopup: boolean;
+  reopenHouseProfile?: () => any; // TODO place this in either housing or own redux slice
 }
 
 const initialState: AuthState = {
   user: cookies.get<User>('user'),
   userDraft: cookies.get<User>('userDraft'),
   showNewUserPopup: undefined,
-  showLoginPopup: false
+  showLoginPopup: false,
+  reopenHouseProfile: undefined
 };
 
 export const authSlice = createSlice({
@@ -68,6 +70,9 @@ export const authSlice = createSlice({
     },
     setShowLoginPopup: (state, action: PayloadAction<boolean>) => {
       state.showLoginPopup = action.payload;
+    },
+    setReopenHouseProfile: (state, action: PayloadAction<() => void>) => {
+      state.reopenHouseProfile = action.payload;
     }
   },
 });
@@ -79,6 +84,7 @@ export const {
   startNewUserFlow,
   endNewUserFlow,
   setShowLoginPopup,
+  setReopenHouseProfile,
 } = authSlice.actions;
 
 // Thunks here
@@ -166,7 +172,8 @@ const selectUserDraft = (state: RootState) => state.auth.userDraft;
 const selectShowNewUserPopup = (state: RootState) =>
   state.auth.showNewUserPopup;
 const selectShowLoginPopup = (state: RootState) => state.auth.showLoginPopup;
-export { selectUser, selectUserDraft, selectShowNewUserPopup, selectShowLoginPopup };
+const selectReopenHouseProfile = (state: RootState) => state.auth.reopenHouseProfile;
+export { selectUser, selectUserDraft, selectShowNewUserPopup, selectShowLoginPopup, selectReopenHouseProfile };
 
 // Export everything
 export default authSlice.reducer;

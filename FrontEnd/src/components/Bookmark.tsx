@@ -12,7 +12,12 @@ const Bookmark: React.FC<PathProps> = (props) => {
 
   return (
     <>
-      <HouseProfile show={show} onHide={() => setShow(false)} {...props} />
+      <HouseProfile
+        show={show}
+        onShow={() => setShow(true)}
+        onHide={() => setShow(false)}
+        {...props}
+      />
 
       <Button variant="no-show" className="w-100" onClick={() => setShow(true)}>
         <div className="bookmark">
