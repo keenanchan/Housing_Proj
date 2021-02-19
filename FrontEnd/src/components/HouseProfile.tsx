@@ -361,7 +361,7 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                             // window.open(`mailto:${leaserEmail}`, '_blank');
                           } else {
                             onHide();
-                            onShow && dispatch(setReopenHouseProfile(onShow()));
+                            onShow && dispatch(setReopenHouseProfile(onShow));
                             dispatch(setShowLoginPopup(true));
                           }
                         }}
@@ -386,7 +386,7 @@ const HouseProfile: React.FC<HouseProfileProps> = ({
                             // window.open(`tel:${leaserPhone}`, '_blank');
                           } else {
                             onHide();
-                            onShow && dispatch(setReopenHouseProfile(onShow()));
+                            onShow && dispatch(setReopenHouseProfile(onShow));
                             dispatch(setShowLoginPopup(true));
                           }
                         }}
