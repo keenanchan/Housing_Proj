@@ -1,9 +1,22 @@
 from app.db.database_setup import User, Room, Move_In,\
-    House_Attribute, Attribute, Bookmark, Address
+    House_Attribute, Attribute, Bookmark, Address, Stay_Period, Base
 from app.util.aws.s3 import get_images, upload_file_wobject
 from datetime import datetime
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 # Create
+
+
+def getSession(db_path):
+    """
+    get a given db session
+    """
+    engine = create_engine(db_path)
+    Base.metadata.bind = engine
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    return session
 
 
 def add_and_commit(db_row, session):
@@ -25,6 +38,7 @@ def add_room(date_created, room_type, price, negotiable, description,
              stay_period,
              distance, address, user, move_in, no_rooms, no_bathrooms,
              session):
+    # TODO: add outside to address duplicate addresses
     address_to_add = Address(address=address, distance=distance)
     Room_to_add = Room(date_created=date_created, room_type=room_type,
                        price=price,
@@ -37,14 +51,18 @@ def add_room(date_created, room_type, price, negotiable, description,
     return Room_to_add
 
 
-def add_move_in(early_interval, early_month, late_interval,
-                late_month, session):
-    Move_In_to_add = Move_In(early_interval=early_interval,
-                             early_month=early_month,
-                             late_interval=late_interval,
+def add_move_in(early_month, late_month, session):
+    Move_In_to_add = Move_In(early_month=early_month,
                              late_month=late_month)
     add_and_commit(Move_In_to_add, session)
     return Move_In_to_add
+
+
+def add_stay_period(from_month, to_month, session):
+    Stay_Period_to_add = Stay_Period(from_month=from_month,
+                                     to_month=to_month)
+    add_and_commit(Stay_Period_to_add, session)
+    return Stay_Period_to_add
 
 
 def add_house_attribute(room, house_attribute, session):
@@ -61,7 +79,8 @@ def add_attribute(name, category, session):
 
 
 def add_bookmark(room_id, user_id, session):
-    exists = check_exist(Bookmark, session, **{'room_id':room_id, 'user_id':user_id})
+    exists = check_exist(Bookmark, session, **
+                         {'room_id': room_id, 'user_id': user_id})
     bookmark_to_add = Bookmark(room_id=room_id, user_id=user_id)
     if not exists:
         add_and_commit(bookmark_to_add, session)
@@ -174,16 +193,16 @@ def write_room(room_json, session):
     early_interval, early_month = room_json['early'].split()
     late_interval, late_month = room_json['early'].split()
     new_move_in = check_exist(Move_In, session, **{
-        'early_interval': early_interval,
+
+
+
         'early_month': early_month,
-        'late_interval': late_interval,
         'late_month': late_month
     })
     if not new_move_in:
-        new_move_in = add_move_in(early_interval,
-                                  early_month,
-                                  late_interval,
+        new_move_in = add_move_in(early_month,
                                   late_month, session)
+
     new_room = add_room(datetime.now(),
                         room_json['roomType'],
                         room_json['pricePerMonth'],
