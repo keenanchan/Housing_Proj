@@ -8,24 +8,20 @@ TEST_DB_NAME = 'housing_test.db'
 TEST_DB_STRING = 'sqlite:///housing_test.db'
 
 
-class TestDB(unittest.TestCase):
-    def test_createdb(self):
-        is_success = createDB(TEST_DB_STRING)
-        self.assertEqual(is_success, True)  # return none upon success
-        # check if the db is generated
-        is_exist = os.path.exists(TEST_DB_NAME)
-        self.assertEqual(is_exist, True)
-        if is_exist:
-            os.remove(TEST_DB_NAME)
-
-
-class TestCRUD(unittest.TestCase):
-    def __init__(self, session=None):
-        super(TestCRUD, self).__init__(session)
+class TestDbOperations(unittest.TestCase):
+    def setUp(self):
         createDB(TEST_DB_STRING)
         self.session = crud.getSession(TEST_DB_STRING)
 
-    def test_addUser(self):
+    def tearDown(self):
+        os.remove(TEST_DB_NAME)
+
+    def test_createdb(self):
+        # check if the db is generated
+        is_exist = os.path.exists(TEST_DB_NAME)
+        self.assertEqual(is_exist, True)
+
+    def test_add_user(self):
         user_name = "cris"
         user_email = "haha@ucsd.edu"
         created_time = datetime.now()
@@ -50,9 +46,24 @@ class TestCRUD(unittest.TestCase):
             User, self.session, **{'email': user_email})
         self.assertEqual(query_object == user_object, True)
 
+    def test_add_stay_period(self):
+        from_month = datetime(2018, 6, 1)
+        to_month = datetime(2018, 6, 12)
+        stay_period_object = crud.add_stay_period(
+            from_month, to_month, self.session)
+        # check if the return object has correct information
+        self.assertEqual(stay_period_object.from_month, from_month)
+        self.assertEqual(stay_period_object.to_month, to_month)
+        # check if the stay period is loaded into the database
+        query_object = crud.check_exist(
+            Stay_Period,
+            self.session,
+            **{'from_month': from_month, 'to_month': to_month})
+        self.assertEqual(query_object == stay_period_object, True)
+        # one thing in the database
+        number_of_rows = self.session.query(Stay_Period).count()
+        self.assertEqual(number_of_rows == 1, True)
+
 
 if __name__ == '__main__':
     unittest.main()
-    is_exist = os.path.exists(TEST_DB_NAME)
-    if is_exist:
-        os.remove(TEST_DB_NAME)
