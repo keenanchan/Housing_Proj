@@ -34,26 +34,30 @@ def add_user(name, email, date_created, phone, description, school_year, major,
     return User_to_add
 
 
-def add_room(date_created, room_type, price, negotiable, description,
-             stay_period,
-             distance, address, user, move_in, no_rooms, no_bathrooms,
-             session):
-    # TODO: add outside to address duplicate addresses
+def add_address(distance, address, session):
     address_to_add = Address(address=address, distance=distance)
+    add_and_commit(address_to_add, session)
+    return address_to_add
+
+
+def add_room(date_created, room_type, price, negotiable, description,
+             stay_period, address,
+             user, move_in, no_rooms, no_bathrooms,
+             session):
     Room_to_add = Room(date_created=date_created, room_type=room_type,
                        price=price,
                        negotiable=negotiable,
                        description=description, stay_period=stay_period,
-                       address=address_to_add,
+                       address=address,
                        user=user, move_in=move_in, no_rooms=no_rooms,
                        no_bathrooms=no_bathrooms)
     add_and_commit(Room_to_add, session)
     return Room_to_add
 
 
-def add_move_in(early_month, late_month, session):
-    Move_In_to_add = Move_In(early_month=early_month,
-                             late_month=late_month)
+def add_move_in(early_date, late_date, session):
+    Move_In_to_add = Move_In(early_date=early_date,
+                             late_date=late_date)
     add_and_commit(Move_In_to_add, session)
     return Move_In_to_add
 
@@ -66,30 +70,38 @@ def add_stay_period(from_month, to_month, session):
 
 
 def add_house_attribute(room, house_attribute, session):
-    House_Attribute_to_add = House_Attribute(
-        room=room, house_attribute=house_attribute)
-    add_and_commit(House_Attribute_to_add, session)
-    return House_Attribute_to_add
+
+    house_attribute_to_add = check_exist(
+        House_Attribute, session, ** {'room_id': room.id,
+                                      'attribute_name': house_attribute.name})
+    if not house_attribute_to_add:
+        house_attribute_to_add = House_Attribute(
+            room=room, house_attribute=house_attribute)
+        add_and_commit(house_attribute_to_add, session)
+    return house_attribute_to_add
 
 
 def add_attribute(name, category, session):
-    Attribute_to_add = Attribute(name=name, category=category)
-    add_and_commit(Attribute_to_add, session)
-    return Attribute_to_add
+    attribute_to_add = check_exist(Attribute, session, **
+                                   {'name': name, 'category': category})
+    if not attribute_to_add:
+        attribute_to_add = Attribute(name=name, category=category)
+        add_and_commit(attribute_to_add, session)
+    return attribute_to_add
 
 
-def add_bookmark(room_id, user_id, session):
-    exists = check_exist(Bookmark, session, **
-                         {'room_id': room_id, 'user_id': user_id})
-    bookmark_to_add = Bookmark(room_id=room_id, user_id=user_id)
-    if not exists:
+def add_bookmark(room, user, session):
+    bookmark_to_add = check_exist(Bookmark, session, **
+                                  {'room_id': room.id, 'user_id': user.id})
+    if not bookmark_to_add:
+        bookmark_to_add = Bookmark(room=room, user=user)
         add_and_commit(bookmark_to_add, session)
     return bookmark_to_add
 
 
-def remove_bookmark(room_id, user_id, session):
+def remove_bookmark(room, user, session):
     session.query(Bookmark).filter_by(
-        room_id=room_id, user_id=user_id).delete()
+        room_id=room.id, user_id=user.id).delete()
     session.commit()
     return
 # Read
@@ -114,7 +126,7 @@ def read_rooms(session):
     return session.query(Room).all()
 
 
-def room_json(room, session):
+def room_json(room, session, test_mode=False):
     other_map = {'other': [], 'facilities': []}
     house_attrs = session.query(House_Attribute).filter(
         House_Attribute.room_id == room.id).all()
@@ -128,14 +140,22 @@ def room_json(room, session):
         other_map[category_name].append(ha.attribute_name)
     r_json = room.serialize
     room_name = room.address.serialize['address'].split(",")[0]
+    room_photos = ["photo1", "photo2"] if test_mode else \
+        get_images("user"
+                   + str(house_user.id),
+                   extra_path=str(room.id)+"/")
+    profile_photo = "profile_photo" if test_mode else 'https://houseit.s3.us-east-2.amazonaws.com/' + \
+        get_images("user"+str(house_user.id), category="profile")[0]
+
     return_json = {
         'name': room_name,
         'location': room.address.serialize['address'],
         'distance': room.address.serialize['distance'],
         'pricePerMonth': r_json['price'],
-        'stayPeriod': r_json['stay_period'],
-        'early': house_move_in.early_interval + " " + house_move_in.early_month,
-        'late': house_move_in.late_interval + " " + house_move_in.late_month,
+        'from_month': room.stay_period.from_month.strftime("%B/%y"),
+        'to_month': room.stay_period.to_month.strftime("%B/%y"),
+        'early': house_move_in.early_date.strftime("%m/%d/%y"),
+        'late': house_move_in.late_date.strftime("%m/%d/%y"),
         'roomType': r_json['room_type'],
         'other': other_map['other'],
         'facilities': other_map['facilities'],
@@ -144,18 +164,14 @@ def room_json(room, session):
         'leaserPhone': house_user.phone,
         'leaserSchoolYear': house_user.school_year,
         'leaserMajor': house_user.major,
-        # add Room Id
-        'photos': get_images("user"+str(house_user.id),
-                             extra_path=str(room.id)+"/"),
-        'profilePhoto': 'https://houseit.s3.us-east-2.amazonaws.com/' +
-        get_images("user"+str(house_user.id), category="profile")[0],
+        'photos': room_photos,
+        'profilePhoto': profile_photo,
         'roomId': r_json['id'],
         'negotiable': r_json['negotiable'],
         'numBaths': r_json['no_bathrooms'],
         'numBeds': r_json['no_rooms'],
         'roomDescription': r_json['description'],
     }
-    print(len(return_json['photos']))
     return return_json
 
 

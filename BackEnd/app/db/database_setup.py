@@ -109,16 +109,16 @@ class Move_In(Base):
     __tablename__ = 'move_in'
 
     id = Column(Integer, primary_key=True)
-    early_month = Column(DateTime, nullable=False)
-    late_month = Column(DateTime, nullable=False)
+    early_date = Column(DateTime, nullable=False)
+    late_date = Column(DateTime, nullable=False)
 
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
             'id': self.id,
-            'early_month': self.early_month,
-            'late_month': self.late_month,
+            'early_date': self.early_date,
+            'late_date': self.late_date,
         }
 
 
