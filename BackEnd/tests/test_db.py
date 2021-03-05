@@ -839,7 +839,98 @@ class TestDbOperations(unittest.TestCase):
     #     self.assertEqual(result_json["roomDescription"] == description, True)
 
     def test_write_attribute(self):
-        pass
+        # create an user
+        user_name = "cris"
+        user_email = "haha@ucsd.edu"
+        created_time = datetime.now()
+        user_phone = "858-2867-3567"
+        user_description = "cultured man"
+        user_school_year = "Third"
+        user_major = "Data Science"
+        user_object = crud.add_user(
+            user_name, 
+            user_email,
+            created_time, 
+            user_phone,
+            user_description, 
+            user_school_year,
+            user_major, 
+            self.session)
+
+        # create a move in
+        early_date = datetime(2018, 6, 1)
+        late_date = datetime(2018, 6, 12)
+        move_in_object = crud.add_move_in(
+            early_date, 
+            late_date, 
+            self.session)
+
+        # create a stay period
+        from_month = datetime(2018, 6, 1)
+        to_month = datetime(2018, 7, 1)
+        stay_period_object = crud.add_stay_period(
+            from_month, 
+            to_month, 
+            self.session)
+
+        # create an address
+        address = "75 Big Rock Cove St.Middletown, NY 10940"
+        distance = "20 mins"
+        address_object = crud.add_address(
+            distance, 
+            address, 
+            self.session)
+
+        # create a room
+        date_created = datetime.now()
+        room_type = room_types[0]
+        price = 500
+        negotiable = True
+        description = "dream house in a life time"
+        no_rooms = 2
+        no_bathrooms = 2
+        room_object = crud.add_room(
+            date_created, 
+            room_type, 
+            price,
+            negotiable, 
+            description,
+            stay_period_object, 
+            address_object,
+            user_object, 
+            move_in_object,
+            no_rooms, 
+            no_bathrooms,
+            self.session)
+
+        room_object = crud.add_room(
+            date_created, 
+            room_type, 
+            price,
+            negotiable, 
+            description,
+            stay_period_object, 
+            address_object,
+            user_object, 
+            move_in_object,
+            no_rooms, 
+            no_bathrooms,
+            self.session)
+
+        crud.write_attribute(
+            facilities[0:3], 
+            'facilities', 
+            room_object, 
+            self.session)
+        
+        count = self.session.query(House_Attribute).count()
+        self.assertEqual(count == 3, True)
+
+        categories = self.session.query(Attribute.category).distinct().all()
+        self.assertEqual(categories[0][0] == 'facilities', True)
+        
+        names = set([result[0] for result in self.session.query(Attribute.name).all()])
+        self.assertEqual(names == set(facilities[0:3]), True)
 
     def test_update_field(self):
         # create an user
