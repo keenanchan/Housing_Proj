@@ -9,6 +9,7 @@ HOUSEIT_S3_URL = 'https://houseit.s3.us-east-2.amazonaws.com/'
 
 # Helper fns
 
+
 def getSession(db_path):
     """
     get a given db session
@@ -26,6 +27,7 @@ def add_and_commit(db_row, session):
 
 # Create
 
+
 def add_user(name, email, date_created, phone, description, school_year, major,
              session):
     '''
@@ -37,6 +39,7 @@ def add_user(name, email, date_created, phone, description, school_year, major,
                        major=major)
     add_and_commit(User_to_add, session)
     return User_to_add
+
 
 def add_address(distance, address, session):
     '''
@@ -108,7 +111,7 @@ def add_attribute(name, category, session):
     if it doesn't already exist there
     '''
     attribute_to_add = get_row_if_exists(Attribute, session, **
-                                   {'name': name, 'category': category})
+                                         {'name': name, 'category': category})
     if not attribute_to_add:
         attribute_to_add = Attribute(name=name, category=category)
         add_and_commit(attribute_to_add, session)
@@ -121,13 +124,14 @@ def add_bookmark(room, user, session):
     if the association doesn't already exist
     '''
     bookmark_to_add = get_row_if_exists(Bookmark, session, **
-                                  {'room_id': room.id, 'user_id': user.id})
+                                        {'room_id': room.id, 'user_id': user.id})
     if not bookmark_to_add:
         bookmark_to_add = Bookmark(room=room, user=user)
         add_and_commit(bookmark_to_add, session)
     return bookmark_to_add
 
 # Read
+
 
 def get_row_if_exists(db_obj, session, **condition):
     """
@@ -177,13 +181,13 @@ def room_json(room, session, test_mode=False):
 
     return_json = {
         'name': room_name,
-        'location': room.address.serialize['address'],
+        'address': room.address.serialize['address'],
         'distance': room.address.serialize['distance'],
         'pricePerMonth': r_json['price'],
         'from_month': room.stay_period.from_month.strftime("%B/%y"),
         'to_month': room.stay_period.to_month.strftime("%B/%y"),
-        'early': house_move_in.early_date.strftime("%m/%d/%y"),
-        'late': house_move_in.late_date.strftime("%m/%d/%y"),
+        'early_date': house_move_in.early_date.strftime("%m/%d/%y"),
+        'late_date': house_move_in.late_date.strftime("%m/%d/%y"),
         'roomType': r_json['room_type'],
         'other': other_map['other'],
         'facilities': other_map['facilities'],
@@ -218,6 +222,7 @@ def update_field(db_obj, session, condition={}, values={}):
 
 # write an attribute to database
 
+
 def write_attribute(attributes, category, room, session):
     '''
     Posted when user posts a room. 
@@ -226,7 +231,8 @@ def write_attribute(attributes, category, room, session):
     '''
     for attribute in attributes:
         # check if an attribute exists
-        new_attribute = get_row_if_exists(Attribute, session, **{'name': attribute})
+        new_attribute = get_row_if_exists(
+            Attribute, session, **{'name': attribute})
         if not new_attribute:
             new_attribute = add_attribute(attribute, category, session)
         # finally add the house attribute
@@ -234,50 +240,52 @@ def write_attribute(attributes, category, room, session):
 
 # write a single room to database
 
-def write_room(room_json, session):
+
+def write_room(room_json, session, test_mode=False):
     # TODO: might need to add error handling upon database fail
+    # write custom exceptions
     # gets room owner, assuming when a new room gets added the user exists
-
-    # TODO: replace key 'location' in room_json with 'address' [consistent naming conventions]
-
     room_owner = get_row_if_exists(
         User, session, **{'email': room_json['leaserEmail']})
-    room_name = room_json['location'].split(",")[0]
-    print(room_json)
-    early_interval, early_month = room_json['early'].split()
-    late_interval, late_month = room_json['early'].split()
+    room_name = room_json['address'].split(",")[0]
+    early_date = datetime.strptime(
+        room_json["early_date"], "%m/%d/%y")
+    late_date = datetime.strptime(
+        room_json["late_date"], "%m/%d/%y")
     new_move_in = get_row_if_exists(Move_In, session, **{
-
-
-
-        'early_month': early_month,
-        'late_month': late_month
+        "early_date": early_date,
+        "late_date": late_date
     })
     if not new_move_in:
-        new_move_in = add_move_in(early_month,
-                                  late_month, session)
+        new_move_in = add_move_in(early_date,
+                                  late_date, session)
 
-    new_address = add_address(room_json['location'],
-                              room_json['distance'])
-    
+    new_address = add_address(room_json['distance'],
+                              room_json['address'], session)
+    new_stay_period = add_stay_period(
+        datetime.strptime(room_json['from_month'], "%B/%y"),
+        datetime.strptime(room_json['to_month'], "%B/%y"), session)
     new_room = add_room(datetime.now(),
                         room_json['roomType'],
                         room_json['pricePerMonth'],
                         room_json['negotiable'],
                         room_json['roomDescription'],
-                        room_json['stayPeriod'],
+                        new_stay_period,
                         new_address,
-                        room_owner, new_move_in, int(room_json['numBeds']), float(room_json['numBaths']), session)
+                        room_owner, new_move_in, int(room_json['numBeds']),
+                        float(room_json['numBaths']), session)
     write_attribute(room_json['other'], 'other', new_room, session)
     write_attribute(room_json['facilities'], 'facilities', new_room, session)
     # add photo
-    for photo in room_json['photos']:
-        path_name = "/".join(["user"+str(room_owner.id), 'housing',
-                              str(new_room.id), photo.filename])
-        upload_file_wobject(photo, 'houseit', path_name)  # Change to ID
+    if not test_mode:
+        for photo in room_json['photos']:
+            path_name = "/".join(["user"+str(room_owner.id), 'housing',
+                                  str(new_room.id), photo.filename])
+            upload_file_wobject(photo, 'houseit', path_name)  # Change to ID
     return True
 
 # DELETE
+
 
 def remove_bookmark(room, user, session):
     '''
@@ -289,8 +297,10 @@ def remove_bookmark(room, user, session):
     session.commit()
     return
 
+
 def remove_room(room, session):
     '''
     removes room from db
     '''
-    pass
+    session.query(Room).filter(Room.id == room.id).delete()
+    return
